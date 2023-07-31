@@ -41,7 +41,80 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-		</plugins>
+
+		<plugin>
+			<groupId>org.github.eirsLett</groupId>
+			<artifactId>frontend-maven-plugin</artifactId>
+			<version>1.12.1</version>
+
+			<executions>
+				<!-- installing node and npm -->
+				<execution>
+					<id>Install node and npm</id>
+					<goals>
+						<goal>Install-node-and-npm</goal>
+					</goals>
+					<phase>generate-resources</phase>
+					<configuration>
+						<nodeVersion>v18.10.0</nodeVersion>
+						<npmVersion>8.19.2</npmVersion>
+					</configuration>
+				</execution>
+					<!-- installing node and npm -->
+			<execution>
+				<id>npm install</id>
+				<goals>
+					<goal>npm</goal>
+				</goals>
+				<phase>generate-resources</phase>
+				<configuration>
+					<arguments>install</arguments>
+				</configuration>
+			</execution>
+
+			<!-- build our production version -->
+			<execution>
+				<id>npm install</id>
+				<goals>
+					<goal>npm</goal>
+				</goals>
+				<phase>generate-resources</phase>
+				<configuration>
+						<arguments>run build</arguments>
+				</configuration>
+			 </execution>
+			</executions>
+
+			<configuration>
+				<nodeVersion>v18.10.0</nodeVersion>
+				<workingDirectory>src/main/frontend</workingDirectory>
+			</configuration>
+		 </plugin>
+
+		 <!-- copy our react build artifacts to spring boot -->
+		 <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-resources-plugin</artifactId>
+<executions>
+<execution>
+	<id>Copy JavaScript app into SpringBoot</id>
+	<phase>generate-resources</phase>
+	<goals>
+		<goal>copy-resources</goal>
+	</goals>
+	<configuration>
+		<outputDirectory>target/classes/static</outputDirectory>
+		<resouces>
+			<resouce>
+				<directory>src/main/frontend/build</directory>
+				<filtering>true</filtering>
+			</resouce>
+		</resouces>
+	</configuration>
+</execution>
+</executions>
+    </plugin>
+	</plugins>
 	</build>
 
 </project>
